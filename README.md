@@ -6,7 +6,7 @@ This project performs a binary classification task using machine learning techni
 The project includes exploratory data analysis (EDA), model training using logistic regression, visualization of the decision boundary, and evaluation of model performance using standard classification metrics.
 ## Dataset
 Describe the dataset used.
-- Number of samples :-1020
+- Number of samples :- 1020
 - Number of features:2
 - Target variable:- Binary categorical variable
 
@@ -23,12 +23,18 @@ The following steps were performed:
 
 ## Results
 Include evaluation metrics:
-- Accuracy
+- Accuracy :- 0.555
 - Confusion Matrix
+         87  71
+         18   24
 - Precision
+   class NO :- 0.83
+   class YES:-0.25
 - Recall
+   class NO :-0.55
+   class YES:-0.57
 - F1-score
+   class NO :- 0.66
+   class YES:-0.35
 
 
-cd Predictive-Analytics-Lab-Exam-2
-python classification.py
