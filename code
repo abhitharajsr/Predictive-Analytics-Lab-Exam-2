@@ -1,0 +1,77 @@
+# Import libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+df = pd.read_csv("/Lab_Exam_binary_classification_dataset.csv")
+
+
+print(df.head())
+print(df.info())
+print(df.describe())
+
+df_cleaned = df.dropna(subset=['Target'])
+
+values > 100 are outliers.
+df_cleaned = df_cleaned[df_cleaned['Feature1'] < 100]
+
+print(df_cleaned['Target'].value_counts())
+
+colors = df_cleaned['Target'].map({'Yes':'red','No':'blue'})
+
+plt.scatter(df_cleaned['Feature1'], df_cleaned['Feature2'], c=colors)
+plt.xlabel("Feature1")
+plt.ylabel("Feature2")
+plt.title("Dataset Visualization (Cleaned Data)")
+plt.show()
+
+X = df_cleaned[['Feature1','Feature2']]
+y = df_cleaned['Target']
+
+encoder = LabelEncoder()
+y = encoder.fit_transform(y)
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)
+
+
+model = LogisticRegression(class_weight='balanced', max_iter=1000)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+
+
+print("Accuracy:", accuracy_score(y_test,y_pred))
+print("\nConfusion Matrix")
+print(confusion_matrix(y_test,y_pred))
+
+print("\nClassification Report")
+print(classification_report(y_test,y_pred))
+
+
+x_min, x_max = X['Feature1'].min()-0.1, X['Feature1'].max()+0.1
+y_min, y_max = X['Feature2'].min()-10, X['Feature2'].max()+10
+
+xx, yy = np.meshgrid(
+    np.linspace(x_min,x_max,300),
+    np.linspace(y_min,y_max,300)
+)
+
+Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
+Z = Z.reshape(xx.shape)
+
+plt.contourf(xx,yy,Z,alpha=0.3)
+
+plt.scatter(X['Feature1'],X['Feature2'],c=y,edgecolors='k')
+
+plt.xlabel("Feature1")
+plt.ylabel("Feature2")
+plt.title("Logistic Regression Decision Boundary (Cleaned Data, Class Weighted)")
+
+plt.show() 
